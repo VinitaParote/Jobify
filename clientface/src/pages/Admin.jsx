@@ -11,7 +11,7 @@ export const loader = async () => {
     const response = await customFetch.get('/users/admin/app-stats');
     return response.data;
   } catch (error) {
-    toast.error('You are not authorized to view this page');
+    toast.error('You are not authorized to view this page');  
     return redirect('/dashboardlayout')
   };
 };

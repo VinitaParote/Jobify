@@ -6,7 +6,7 @@ export const JOB_STATUS ={
 
 export const JOB_TYPE = {
     FULLTIME:'full-time',
-    PARTIME:'part-ime',
+    PARTIME:'part-time',
     INTERNSHIP:'internship'
 };
 

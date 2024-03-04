@@ -1,11 +1,12 @@
 import React from 'react';
-import { FormRow, FormRowSelect } from '../component';
+import { FormRow, FormRowSelect, SubmitBtn } from '../component';
 import Wrapper from '../assets/wrappers/DashboardFormPage';
 import { useLoaderData } from 'react-router-dom';
 import { JOB_STATUS, JOB_TYPE } from '../../../utils/constant';
-import { Form, useNavigation, redirect } from 'react-router-dom';
+import { Form, redirect } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import customFetch from '../utils/customFetch';
+//import SubmitBtn from '../component/SubmitBtn';
 //import { param } from 'express/lib/router';
 
 export const loader = async ({ params }) => {
@@ -33,8 +34,6 @@ export const action = async ({request, params}) => {
 
 const EditJob = () => {
   const {job} =  useLoaderData();
-  const navigation = useNavigation();
-  const isSubmitting = navigation.state === 'submitting';
   return (
     <Wrapper>
       <Form method='post' className='form'>
@@ -61,13 +60,7 @@ const EditJob = () => {
             defaultValue={job.jobType}
             list={Object.values(JOB_TYPE)}
           />
-          <button
-            type='submit'
-            className='btn btn-block form-btn '
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? 'submitting...' : 'submit'}
-          </button>
+         <SubmitBtn formBtn />
         </div>
       </Form>
     </Wrapper>

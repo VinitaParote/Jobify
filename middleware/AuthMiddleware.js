@@ -1,4 +1,4 @@
-import { UnauthenticatedError } from '../error/customError.js';
+import { UnauthenticatedError,  UnauthorizedError, BadRequestError } from '../error/customError.js';
 import { verifyJWT } from '../utils/tokenUtils.js';
 
 export const authenticateUser = async (req, res, next) => {
@@ -9,33 +9,14 @@ export const authenticateUser = async (req, res, next) => {
   }
   try {
     const { userId, role } = verifyJWT(token);
-    req.user = { userId, role };
+    const testUser = userId === '65e083a4625f348a4b7ae260';
+    req.user = { userId, role, testUser };
     next();
   } catch (error) {
     throw new UnauthenticatedError('authentication invalid');
   }
 };
 
-// import { UnauthenticatedError, UnauthorizedError } from "../error/customError.js";
-// import { verifyJWT } from "../utils/tokenUtils.js";
-
-// export const authenticateUser = async (req, res, next) => {
-//   console.log(req.headers.authorization);
-//   let token = req.headers.authorization;
-//   // const { token } = req.cookies;
-//   // console.log('auth middleware');
-//   // console.log(req.cookies);
-//   if (!token) {
-//     throw new UnauthenticatedError('authentication invalid');
-//   };
-//   try {
-//     const { userId, role } = verifyJWT(token);
-//     req.user = { userId, role };
-//     next();
-//   } catch (error) {
-//     throw new UnauthenticatedError('authentication invalid');
-//   }
-// };
 
 export const authorizePermissions = (...roles) => {
   return (req, res, next) => {
@@ -44,4 +25,11 @@ export const authorizePermissions = (...roles) => {
     }
     next();
   };
+};
+
+export const checkForTestUser = (req, res, next) => {
+  if (req.user.testUser) {
+    throw new BadRequestError('Demo User. Read Only!');
+  }
+  next();
 };
