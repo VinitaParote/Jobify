@@ -32,10 +32,11 @@ const Register = () => {
         <FormRow type='email' name='email' />
 
         <FormRow type='password' name='password' />
-
+         <div>
         <button type='submit' className='btn btn-block' disabled={isSubmitting}>
           {isSubmitting ?  'Sending...' : 'submit'}
         </button>
+        </div>
         <p>
           Already a member?
           <Link to='/login' className='member-btn'>

@@ -34,7 +34,7 @@ export const login = async (req, res, next) => {
 
         // Check if the provided password matches the stored hashed password
         const isValidUser = await comparePassword(password, user.password);
-
+                                                                                                                                                                                                                                                                                                                                                                    
         if (!isValidUser) {
             throw new UnauthenticatedError("Invalid Email or Password");
         }

@@ -5,24 +5,32 @@ import { JOB_STATUS, JOB_TYPE } from '../utils/constant.js';
 import Job from '../model/jobModel.js';
 import User from '../model/UserModel.js';
 
+
 const isValidMongoId = (value) => mongoose.Types.ObjectId.isValid(value);
 
-const withValidationErrors = (validateValues) => {
+
+const withValidationErrors = (validateJob) => {
   return [
-    validateValues,
+    validateJob,
     (req, res, next) => {
       const errors = validationResult(req);
-      if (!errors.isEmpty()) {
+      if (!isValidMongoId) {
+        
         const errorMessages = errors.array().map((error) => error.msg);
-        if (errorMessages[0].startsWith('no job')) {
-          throw new NotFoundError(errorMessages);
+        // Exclude validation error for MongoDB ObjectIDs
+        if (!errorMessages.some(msg => msg.includes('job ID'))) {
+          if (errorMessages[0].startsWith('no job')) {
+            throw new NotFoundError(errorMessages);
+          }
+          throw new BadRequestError(errorMessages);
         }
-        throw new BadRequestError(errorMessages);
       }
       next();
     },
   ];
 };
+
+
 // const withValidationErrors = ( validateValues) => {
 //   return [
 //     validateValues,
@@ -52,7 +60,7 @@ export const validateJobInput = withValidationErrors([
 ]);
 
 export const validateIdParam = withValidationErrors([
-  param('id').custom(async (value, { req }) => {
+  param( 'id ').custom(async (value, { req }) => {
     const isValidId = mongoose.Types.ObjectId.isValid(value);
     if (!isValidId) throw new BadRequestError('invalid MongoDB id');
     const job = await Job.findById(value);

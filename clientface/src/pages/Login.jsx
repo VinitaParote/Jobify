@@ -37,10 +37,11 @@ const Login = () => {
       <p></p>
      <FormRow type="email" name="email"  />
      <FormRow type="password" name="password"  />
+     <div>
      <button type='submit' className='btn btn-block' disabled={isSubmitting}>
       {isSubmitting ? 'loging':'login'}
       </button>
-      
+      </div>
      <button type='button' className='btn btn-block'>explore the app</button>
      <p>Not a Member yet? 
       <Link to='/register' className='member-btn'>Register </Link>

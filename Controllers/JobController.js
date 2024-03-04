@@ -4,7 +4,8 @@ import { StatusCodes } from 'http-status-codes';
 //Get All Jobs
 export const getAllJobs = async (req, res) => {  //don`t get it
     console.log(req.user);
-    const jobs = await Job.find({createdBy:req.user.userId})
+    const jobs = await Job.find({})
+    //console.log("jobs", jobs)
     res.status(StatusCodes.OK).json({ jobs });
 };
 
@@ -18,13 +19,17 @@ export const creatJob = async (req, res) => {
 
 //Get Single Job
 export const getSingleJob = async (req, res) => {
-   const job = await Job.findById(id);
+    const _id = req.params.id;
+    const job = await Job.findById(_id);
+    console.log(job);
+   //const job = await Job.findById('_id');
     res.status(StatusCodes.OK).json({ job });
 }
 
 //Edit Job - update job
 export const updateJob = async (req, res) => {
     const updatedjob = await Job.findByIdAndUpdate(req.params.id, req.body, {new: true});
+    console.log('updatedjob', updatedjob);
     res.status(StatusCodes.OK).json({ job: updatedjob});
 };
 
