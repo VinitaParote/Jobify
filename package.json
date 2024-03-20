@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "setup-project": "npm i && cd clientface && npm i",
+    "setup-production-app": "npm i && cd clientface && npm i && npm run build",
     "server": "nodemon server",
     "clientface": "cd clientface && npm run dev",
     "dev": "concurrently --kill-others-on-fail \" npm run server\" \" npm run clientface\""
