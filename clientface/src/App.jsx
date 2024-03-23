@@ -1,5 +1,9 @@
 import React from 'react'
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { ErrorElement } from './component/ErrorElement';
+
 import { DashboardLayout, HomeLayout, Register, Landing, Login, Error, AddJob, AllJobs, DeleteJob, EditJob, Profile, Stats, Admin, } from './pages';
 
 import { action as registerAction } from './pages/Register';
@@ -20,7 +24,15 @@ export const checkDefaultTheme = () => {
   return isDarkTheme;
 }
 
- checkDefaultTheme();
+  const isDarkThemeEnable =  checkDefaultTheme();
+
+ const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5,
+    },
+  },
+});
 
 const router = createBrowserRouter([
   {
@@ -65,6 +77,7 @@ const router = createBrowserRouter([
           path: 'stats',
           element: <Stats />,
           loader: StatsLoader,
+          errorElement: <ErrorElement />,
         },
         {
           path: 'admin',
@@ -97,6 +110,12 @@ const router = createBrowserRouter([
 
 
 const App = () => {
-  return <RouterProvider router={router} />;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
+  );
+
 };
 export default App;
